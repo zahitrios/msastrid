@@ -1,0 +1,151 @@
+# Welcome to Serverless!
+#
+# This file is the main config file for your service.
+# It's very minimal at this point and uses default values.
+# You can always add more config options for more control.
+# We've included some commented out config examples here.
+# Just uncomment any of them to get that config option.
+#
+# For full config options, check the docs:
+#    docs.serverless.com
+#
+# Happy Coding!
+
+service: ms-astrid
+# app and org for use with dashboard.serverless.com
+#app: your-app-name
+#org: your-org-name
+
+# You can pin your service to only deploy with a specific Serverless version
+# Check out our docs for more details
+frameworkVersion: '3'
+
+useDotenv: true
+plugins:
+  - serverless-dotenv-plugin
+
+provider:
+  name: aws
+  runtime: go1.x
+
+# you can overwrite defaults here
+  stage: stg-hello
+  region: us-east-1
+
+# you can add statements to the Lambda function's IAM Role here
+#  iam:
+#    role:
+#      statements:
+#        - Effect: "Allow"
+#          Action:
+#            - "s3:ListBucket"
+#          Resource: { "Fn::Join" : ["", ["arn:aws:s3:::", { "Ref" : "ServerlessDeploymentBucket" } ] ]  }
+#        - Effect: "Allow"
+#          Action:
+#            - "s3:PutObject"
+#          Resource:
+#            Fn::Join:
+#              - ""
+#              - - "arn:aws:s3:::"
+#                - "Ref" : "ServerlessDeploymentBucket"
+#                - "/*"
+
+# you can define service wide environment variables here
+#  environment:
+#    variable1: value1
+
+package:
+  patterns:
+    - '!./**'
+    - ./bin/**
+
+functions:
+  hello:
+    memorySize: 3008
+    timeout: 500
+    handler: bin/products
+    events:
+      - httpApi:
+          path: /campaigns/{id}
+          method: get
+      - httpApi:
+          path: /campaigns/{id}
+          method: post
+      - httpApi:
+          path: /campaigns/delete/{id}
+          method: post
+      - httpApi:
+          path: /campaigns
+          method: get
+      - httpApi:
+          path: /campaigns
+          method: post
+      - httpApi:
+          path: /campaigns/base/items/pendding-costs
+          method: get
+      - httpApi:
+          path: /campaigns/base/items/bulk-approve-costs
+          method: post
+      - httpApi:
+          path: /campaigns/{campaignId}/items
+          method: get
+      - httpApi:
+          path: /campaigns/{campaignId}/items/pendding
+          method: get
+      - httpApi:
+          path: /campaigns/{campaignId}/items/pendding/detail
+          method: get
+      - httpApi:
+          path: /campaigns/{campaignId}/items/bulk-approve
+          method: post
+      - httpApi:
+          path: /price-list
+          method: get
+      - httpApi:
+          path: /price-list/publish
+          method: get
+      - httpApi:
+          path: /price-list/{sku}
+          method: get
+      - httpApi:
+          path: /price-list
+          method: post
+      - httpApi:
+          path: /price-list/publish
+          method: post
+      - httpApi:
+          path: /gaia-groups
+          method: get
+      - httpApi:
+          path: /gaia-groups/publish
+          method: get
+      - httpApi:
+          path: /gaia-groups/{sku}
+          method: get
+      - httpApi:
+          path: /gaia-groups
+          method: post
+      - httpApi:
+          path: /gaia-groups
+          method: delete
+      - httpApi:
+          path: /gaia-groups/publish
+          method: post
+      - httpApi:
+          path: /gaia-groups/sync
+          method: post
+      - httpApi:
+          path: /merge-price-report
+          method: get
+      - httpApi:
+          path: /consume-pim-products
+          method: get
+      - httpApi:
+          path: /users/role/{email}
+          method: get
+      - httpApi:
+          path: /export/{collection}
+          method: get
+      - httpApi:
+          path: /logs
+          method: get
